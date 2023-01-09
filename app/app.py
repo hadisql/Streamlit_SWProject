@@ -3,9 +3,27 @@ import requests
 import streamlit as st
 import re
 
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.write(' ')
+
+with col2:
+    st.markdown('![SW logo](https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftoppng.com%2Fpublic%2Fuploads%2Fthumbnail%2Fstar-wars-gold-vector-logo-free-115740376030qixhwp63f.png&f=1&nofb=1&ipt=7ceb09a8de4e4f640ae0707180d6348274e5fa91ce4023ad7319e3e451b89160&ipo=images)')
+
+with col3:
+    st.write(' ')
+#SW_md = st.markdown('![SW logo](https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftoppng.com%2Fpublic%2Fuploads%2Fthumbnail%2Fstar-wars-gold-vector-logo-free-115740376030qixhwp63f.png&f=1&nofb=1&ipt=7ceb09a8de4e4f640ae0707180d6348274e5fa91ce4023ad7319e3e451b89160&ipo=images)')
+
 st.title("Star Wars Interface")
 
 st.subheader("what type of data are you looking for young Padawan ?")
+# - Sidebar - #
+with st.sidebar:
+    st.markdown('![Wookiee image](https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Ficons.iconarchive.com%2Ficons%2Fgoodstuff-no-nonsense%2Ffree-space%2F128%2Fchewbacca-icon.png&f=1&nofb=1&ipt=31860093d9e36704bdc26dddac54b3183fe0ab02913267d78fe9135bc2e1a38a&ipo=images)')
+    wookie_mode = st.radio('Wookiee mode ?:', ['No', 'Yes'])
+# ----------- #
 sw_selection = st.selectbox('select a data',['People','Starships','Vehicles','Planets','Films'])
 
 @st.cache
@@ -71,3 +89,6 @@ if update_with_names :
     st.table(update_url_infos_regex(data1))
 else:
     st.table(data1)
+
+st.write('Wookie mode ?')
+st.write(wookie_mode)
