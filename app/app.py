@@ -14,7 +14,6 @@ with col2:
 
 with col3:
     st.write(' ')
-#SW_md = st.markdown('![SW logo](https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftoppng.com%2Fpublic%2Fuploads%2Fthumbnail%2Fstar-wars-gold-vector-logo-free-115740376030qixhwp63f.png&f=1&nofb=1&ipt=7ceb09a8de4e4f640ae0707180d6348274e5fa91ce4023ad7319e3e451b89160&ipo=images)')
 
 st.title("Star Wars Interface")
 
