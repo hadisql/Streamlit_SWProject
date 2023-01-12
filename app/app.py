@@ -3,6 +3,26 @@ import requests
 import streamlit as st
 import re
 
+#----------------------------------------------------------
+def local_css(file_name):
+    with open(file_name) as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
+def remote_css(url):
+    st.markdown(f'<link href="{url}" rel="stylesheet">', unsafe_allow_html=True)
+
+def icon(icon_name):
+    st.markdown(f'<i class="material-icons">{icon_name}</i>', unsafe_allow_html=True)
+
+local_css("style.css")
+#remote_css('https://fonts.googleapis.com/icon?family=Material+Icons')
+
+#icon("search")
+#selected = st.text_input("", "Search...")
+#button_clicked = st.button("OK")
+original_title = '<p style="font-family:Courier; color:LightGrey; font-size: 40px;">Original image</p>'
+#st.markdown(original_title, unsafe_allow_html=True)
+#----------------------------------------------------------
 
 col1, col2, col3 = st.columns(3)
 
@@ -23,7 +43,7 @@ with st.sidebar:
     st.markdown('![Wookiee image](https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Ficons.iconarchive.com%2Ficons%2Fgoodstuff-no-nonsense%2Ffree-space%2F128%2Fchewbacca-icon.png&f=1&nofb=1&ipt=31860093d9e36704bdc26dddac54b3183fe0ab02913267d78fe9135bc2e1a38a&ipo=images)')
     wookie_mode = st.radio('Wookiee mode ?:', ['No', 'Yes'])
 # ----------- #
-sw_selection = st.selectbox('select a data',['People','Starships','Vehicles','Planets','Films'])
+sw_selection = st.selectbox('select a data',['Films','People','Starships','Vehicles','Species','Planets'])
 
 @st.cache
 def get_data_names(choice):
@@ -32,14 +52,24 @@ def get_data_names(choice):
     '''
     r = requests.get(f"https://swapi.dev/api/{choice.lower()}/")
     namelist = []
-    for item in r.json().get('results'):
-        if choice == 'Films':
-            namelist.append(item['title'])
-        else:
-            namelist.append(item['name'])
-    return namelist
+    number_of_results = r.json()["count"]
+    dict_of_results = {}
+    for i in range(number_of_results):
+        try:
+            r_i = requests.get(f"https://swapi.dev/api/{choice.lower()}/{i+1}/")
+            if choice == 'Films':
+                print(r_i.json()['title'])
+                namelist.append(r_i.json()['title'])
+                dict_of_results[r_i.json()['title']] = r_i.json()
+            else:
+                namelist.append(r_i.json()['name'])
+                dict_of_results[r_i.json()['name']] = r_i.json()
+        except:
+            pass
+    return number_of_results,namelist, dict_of_results
 
-def req_sw_list(url_list):
+
+def request_list(url_list):
 
     if url_list == []:
         return url_list
@@ -55,39 +85,58 @@ def req_sw_list(url_list):
     except:
         return url_list
 
-def req_sw_url(url):
-
+def request_url(url):
         if re.search('https',url) and re.search('\/films\/',url):
-            return requests.get(url).json()['title']
+            try:
+                result = requests.get(url).json()['title']
+                return result
+            except:
+                pass
         elif re.search('https',url):
-            return requests.get(url).json()['name']
+            try:
+                result = requests.get(url).json()['name']
+                return result
+            except:
+                pass
         else:
             return url
 
 @st.experimental_memo
 def update_url_infos_regex(df):
 
-    return df.iloc[:,0].apply(lambda x: ", ".join(req_sw_list(x)) if type(x)==list else req_sw_url(str(x)))
+    return df.iloc[:,0].apply(lambda x: ", ".join(request_list(x)) if type(x)==list else request_url(str(x)))
 
+
+n_results,name_list, all_list = get_data_names(sw_selection)
+
+st.write(f"number of {sw_selection} found: {n_results}")
 
 st.write(f"Which one ?")
 
-name_selection = st.selectbox(f'select one of the {sw_selection}', get_data_names(sw_selection))
+with st.form("Input"):
+    input = st.text_input('For what you are looking for, you may type :', max_chars=30)
+    update_with_names = st.checkbox('update url info with names (takes more time to run)')
+    btnResult = st.form_submit_button('Search',)
 
-name_info = requests.get(f"https://swapi.dev/api/{sw_selection.lower()}/?search={name_selection}")
+def search_name(input):
+    display_result_names = []
+    for name in name_list:
+        if re.search(f'{input.lower()}|{input.upper()}|{input.capitalize()}',name):
+            display_result_names.append(name)
+    return display_result_names
 
-name_info_res = name_info.json().get('results')[0]
+if st.session_state['FormSubmitter:Input-Search']:
 
-data1 = pd.DataFrame(data=name_info_res.values(),
-                     index=name_info_res.keys()).rename({0:f"{name_selection}"},axis='columns')
+    st.markdown(f'##### **Here are your results :** \n ***{", ".join(search_name(input))}***')
+    name_selection = st.selectbox(f'Which {sw_selection} result do you want to get more informations about ?',search_name(input))
 
+    data1 = pd.DataFrame(data=all_list[name_selection].values(),
+                        index=all_list[name_selection].keys()).rename({0:f"{name_selection}"},axis='columns')
 
-update_with_names = st.checkbox('update url info with names')
+    if update_with_names :
+        st.table(update_url_infos_regex(data1))
+    else:
+        st.table(data1)
 
-if update_with_names :
-    st.table(update_url_infos_regex(data1))
-else:
-    st.table(data1)
-
-st.write('Wookie mode ?')
-st.write(wookie_mode)
+    ##############################################
+#st.write(st.session_state)
