@@ -8,3 +8,34 @@ body {
   color: rgb(247, 210, 64);
   font-size: large;
 }
+
+
+.main .block-container {
+    background-image: url("https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.ppt-backgrounds.net%2Fimages%2Fstar-wars-intro-star-wars-intro-css3-by-florian-on-depen-clip-art-powerpoint-ppt-templates.jpg&f=1&nofb=1&ipt=7494815797fe63b36aad70d301a8cf6836994101d12f38393c6b16f626446614&ipo=images");
+}
+
+
+<section tabindex="0" class="main css-k1vhr4 egzxvld3"><div class="block-container css-12oz5g7 egzxvld2" style="position: relative;" bis_skin_checked="1"><div style="overflow: visible; width: 0px; display: flex; flex-direction: column; flex: 1 1 0%;" bis_skin_checked="1"><div width="704" data-testid="stVerticalBlock" class="css-1n76uvr e1tzin5v0" bis_skin_checked="1"><div data-stale="false" width="704" class="element-container css-1hynsf2 e1tzin5v3" bis_skin_checked="1"><div class="stMarkdown" style="width: 704px;" bis_skin_checked="1"><div data-testid="stMarkdownContainer" class="css-1fv8s86 e16nr0p33" bis_skin_checked="1"><style>body {
+  color: rgb(247, 210, 64);
+  background-color: #4F8BF9;
+}
+
+
+.stTextInput>div>div>input {
+  color: rgb(247, 210, 64);
+  font-size: large;
+}
+
+
+
+.main {
+    background-image: url("https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.ppt-backgrounds.net%2Fimages%2Fstar-wars-intro-star-wars-intro-css3-by-florian-on-depen-clip-art-powerpoint-ppt-templates.jpg&f=1&nofb=1&ipt=7494815797fe63b36aad70d301a8cf6836994101d12f38393c6b16f626446614&ipo=images");
+}
+
+.header {
+  background-image: url("https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.ppt-backgrounds.net%2Fimages%2Fstar-wars-intro-star-wars-intro-css3-by-florian-on-depen-clip-art-powerpoint-ppt-templates.jpg&f=1&nofb=1&ipt=7494815797fe63b36aad70d301a8cf6836994101d12f38393c6b16f626446614&ipo=images");
+}
+
+/*.section .main .css-k1vhr4 .egzxvld3 {
+  background-image: url("https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.ppt-backgrounds.net%2Fimages%2Fstar-wars-intro-star-wars-intro-css3-by-florian-on-depen-clip-art-powerpoint-ppt-templates.jpg&f=1&nofb=1&ipt=7494815797fe63b36aad70d301a8cf6836994101d12f38393c6b16f626446614&ipo=images");
+}*/
